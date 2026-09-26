@@ -1,0 +1,30 @@
+openapi: 3.0.3
+info:
+  title: ms-inventario
+  description: Microservicio de inventario de BodegaNube.
+  version: 0.0.1
+servers:
+  - url: /inventario
+paths:
+  /productos:
+    get:
+      summary: Lista el catálogo de productos y su stock disponible.
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Listado de productos.
+  /reservas:
+    post:
+      summary: Verifica y reserva stock para una orden (uso interno).
+      responses:
+        "200":
+          description: Stock reservado.
+        "409":
+          description: Stock insuficiente.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
