@@ -1,0 +1,3 @@
+CREATE DATABASE auth_db;
+CREATE DATABASE inventario_db;
+CREATE DATABASE ordenes_db;
