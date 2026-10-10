@@ -1,21 +1,21 @@
 services:
-  postgres:
+  inventario-db:
     image: postgres:16-alpine
-    container_name: bodeganube-postgres
+    container_name: inventario-db
     restart: unless-stopped
     environment:
+      POSTGRES_DB: inventario_db
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "5432:5432"
+      - "5435:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
-      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+      - inventario-pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d inventario_db"]
       interval: 5s
       timeout: 3s
       retries: 10
 
 volumes:
-  pgdata:
+  inventario-pgdata:

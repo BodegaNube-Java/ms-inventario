@@ -2,6 +2,7 @@ package cl.duoc.ms_inventario.controller;
 
 import cl.duoc.ms_inventario.dto.ProductoRequest;
 import cl.duoc.ms_inventario.dto.ProductoResponse;
+import cl.duoc.ms_inventario.dto.ProductoUpdateRequest;
 import cl.duoc.ms_inventario.service.CatalogoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -37,5 +38,18 @@ public class CatalogoController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(catalogoService.crear(request));
+    }
+
+    @PutMapping("/productos/{id}")
+    public ResponseEntity<ProductoResponse> actualizar(
+            @PathVariable UUID id,
+            @Valid @RequestBody ProductoUpdateRequest request) {
+        return ResponseEntity.ok(catalogoService.actualizar(id, request));
+    }
+
+    @DeleteMapping("/productos/{id}")
+    public ResponseEntity<Void> desactivar(@PathVariable UUID id) {
+        catalogoService.desactivar(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -49,9 +49,8 @@ public class GlobalExceptionHandler {
             MethodArgumentNotValidException ex) {
 
         Map<String, String> errores = new HashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach(error ->
-                errores.put(error.getField(), error.getDefaultMessage())
-        );
+        ex.getBindingResult().getFieldErrors()
+                .forEach(error -> errores.put(error.getField(), error.getDefaultMessage()));
 
         Map<String, Object> cuerpo = new HashMap<>();
         cuerpo.put("timestamp", LocalDateTime.now());
@@ -68,5 +67,14 @@ public class GlobalExceptionHandler {
         cuerpo.put("status", status.value());
         cuerpo.put("error", mensaje);
         return ResponseEntity.status(status).body(cuerpo);
+    }
+
+    @ExceptionHandler(SkuDuplicadoException.class)
+    public ResponseEntity<Map<String, Object>> handleSkuDuplicado(SkuDuplicadoException ex) {
+        log.info(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
+                "error", ex.getMessage(),
+                "timestamp", LocalDateTime.now().toString(),
+                "status", 409));
     }
 }
